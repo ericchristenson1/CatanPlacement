@@ -1,0 +1,214 @@
+================================================================================
+EXPERIMENT: Comparison of Pruning Modalities
+================================================================================
+Generating 30 boards and evaluating each with the 3 modalities
+Time limit per execution: 1000.0 seconds
+
+Generating boards...
+  Configuration: 4 players
+  Quality weights: resources=0.500, expected_cards=0.300, prob_at_least_one=0.200
+  Board 0 generated (seed=0)
+  Board 1 generated (seed=1)
+  Board 2 generated (seed=2)
+  Board 3 generated (seed=3)
+  Board 4 generated (seed=4)
+  Board 5 generated (seed=5)
+  Board 6 generated (seed=6)
+  Board 7 generated (seed=7)
+  Board 8 generated (seed=8)
+  Board 9 generated (seed=9)
+  Board 10 generated (seed=10)
+  Board 11 generated (seed=11)
+  Board 12 generated (seed=12)
+  Board 13 generated (seed=13)
+  Board 14 generated (seed=14)
+  Board 15 generated (seed=15)
+  Board 16 generated (seed=16)
+  Board 17 generated (seed=17)
+  Board 18 generated (seed=18)
+  Board 19 generated (seed=19)
+  Board 20 generated (seed=20)
+  Board 21 generated (seed=21)
+  Board 22 generated (seed=22)
+  Board 23 generated (seed=23)
+  Board 24 generated (seed=24)
+  Board 25 generated (seed=25)
+  Board 26 generated (seed=26)
+  Board 27 generated (seed=27)
+  Board 28 generated (seed=28)
+  Board 29 generated (seed=29)
+
+
+================================================================================
+Modality: Feasibility Pruning Only
+================================================================================
+  Board 0: 442.0174s - Positions: (42, 31), Objective value player one: 6.7667 - Recursive calls: 5,634,937
+  Board 1: 445.5643s - Positions: (20, 1), Objective value player one: 6.7917 - Recursive calls: 5,634,937
+  Board 2: 445.0003s - Positions: (24, 41), Objective value player one: 6.7778 - Recursive calls: 5,634,937
+  Board 3: 445.4573s - Positions: (2, 21), Objective value player one: 6.7361 - Recursive calls: 5,634,937
+  Board 4: 444.2690s - Positions: (33, 7), Objective value player one: 6.7917 - Recursive calls: 5,634,937
+  Board 5: 442.6132s - Positions: (25, 1), Objective value player one: 6.7778 - Recursive calls: 5,634,937
+  Board 6: 441.6423s - Positions: (29, 7), Objective value player one: 6.7472 - Recursive calls: 5,634,937
+  Board 7: 444.9940s - Positions: (30, 44), Objective value player one: 6.7639 - Recursive calls: 5,634,937
+  Board 8: 444.3487s - Positions: (41, 43), Objective value player one: 6.6667 - Recursive calls: 5,634,937
+  Board 9: 443.4941s - Positions: (19, 33), Objective value player one: 6.7667 - Recursive calls: 5,634,937
+  Board 10: 444.5225s - Positions: (29, 33), Objective value player one: 6.8194 - Recursive calls: 5,634,937
+  Board 11: 454.2635s - Positions: (2, 41), Objective value player one: 6.7778 - Recursive calls: 5,634,937
+  Board 12: 445.4887s - Positions: (44, 33), Objective value player one: 6.7639 - Recursive calls: 5,634,937
+  Board 13: 443.1874s - Positions: (32, 12), Objective value player one: 6.7500 - Recursive calls: 5,634,937
+  Board 14: 444.2226s - Positions: (34, 1), Objective value player one: 6.7556 - Recursive calls: 5,634,937
+  Board 15: 443.5160s - Positions: (15, 42), Objective value player one: 6.7778 - Recursive calls: 5,634,937
+  Board 16: 444.5709s - Positions: (15, 21), Objective value player one: 6.7778 - Recursive calls: 5,634,937
+  Board 17: 443.6889s - Positions: (21, 44), Objective value player one: 6.7917 - Recursive calls: 5,634,937
+  Board 18: 443.3624s - Positions: (12, 42), Objective value player one: 6.7917 - Recursive calls: 5,634,937
+  Board 19: 442.9552s - Positions: (30, 31), Objective value player one: 6.7639 - Recursive calls: 5,634,937
+  Board 20: 443.8549s - Positions: (33, 29), Objective value player one: 6.7917 - Recursive calls: 5,634,937
+  Board 21: 442.7369s - Positions: (12, 32), Objective value player one: 6.7528 - Recursive calls: 5,634,937
+  Board 22: 443.2766s - Positions: (1, 25), Objective value player one: 6.7778 - Recursive calls: 5,634,937
+  Board 23: 443.3843s - Positions: (7, 24), Objective value player one: 6.8111 - Recursive calls: 5,634,937
+  Board 24: 444.0095s - Positions: (1, 41), Objective value player one: 6.7889 - Recursive calls: 5,634,937
+  Board 25: 442.8969s - Positions: (1, 29), Objective value player one: 6.7778 - Recursive calls: 5,634,937
+  Board 26: 443.8668s - Positions: (12, 14), Objective value player one: 6.7528 - Recursive calls: 5,634,937
+  Board 27: 444.6593s - Positions: (43, 19), Objective value player one: 6.8056 - Recursive calls: 5,634,937
+  Board 28: 442.7565s - Positions: (41, 15), Objective value player one: 6.7972 - Recursive calls: 5,634,937
+  Board 29: 444.2616s - Positions: (38, 43), Objective value player one: 6.7917 - Recursive calls: 5,634,937
+
+  Summary:
+    Successful: 30/30
+    Timeouts: 0/30
+    Average time: 444.1627s
+    Min time: 441.6423s
+    Max time: 454.2635s
+
+================================================================================
+Modality: Feasibility + Memo
+================================================================================
+  Board 0: 79.0538s - Positions: (42, 31), Objective value player one: 6.7667 - Recursive calls: 983,839
+  Board 1: 79.3012s - Positions: (20, 1), Objective value player one: 6.7917 - Recursive calls: 983,839
+  Board 2: 79.2471s - Positions: (24, 41), Objective value player one: 6.7778 - Recursive calls: 983,839
+  Board 3: 80.2107s - Positions: (2, 21), Objective value player one: 6.7361 - Recursive calls: 983,839
+  Board 4: 79.4050s - Positions: (33, 7), Objective value player one: 6.7917 - Recursive calls: 983,839
+  Board 5: 79.3719s - Positions: (25, 1), Objective value player one: 6.7778 - Recursive calls: 983,839
+  Board 6: 79.2980s - Positions: (29, 7), Objective value player one: 6.7472 - Recursive calls: 983,839
+  Board 7: 79.0294s - Positions: (30, 44), Objective value player one: 6.7639 - Recursive calls: 983,839
+  Board 8: 80.2757s - Positions: (41, 43), Objective value player one: 6.6667 - Recursive calls: 983,839
+  Board 9: 79.1570s - Positions: (19, 33), Objective value player one: 6.7667 - Recursive calls: 983,839
+  Board 10: 79.1125s - Positions: (29, 33), Objective value player one: 6.8194 - Recursive calls: 983,839
+  Board 11: 78.8134s - Positions: (2, 41), Objective value player one: 6.7778 - Recursive calls: 983,839
+  Board 12: 79.6239s - Positions: (44, 33), Objective value player one: 6.7639 - Recursive calls: 983,839
+  Board 13: 79.1707s - Positions: (32, 12), Objective value player one: 6.7500 - Recursive calls: 983,839
+  Board 14: 78.7598s - Positions: (34, 1), Objective value player one: 6.7556 - Recursive calls: 983,839
+  Board 15: 79.1261s - Positions: (15, 42), Objective value player one: 6.7778 - Recursive calls: 983,839
+  Board 16: 78.8883s - Positions: (15, 21), Objective value player one: 6.7778 - Recursive calls: 983,839
+  Board 17: 80.0107s - Positions: (21, 44), Objective value player one: 6.7917 - Recursive calls: 983,839
+  Board 18: 78.6079s - Positions: (12, 42), Objective value player one: 6.7917 - Recursive calls: 983,839
+  Board 19: 78.9985s - Positions: (30, 31), Objective value player one: 6.7639 - Recursive calls: 983,839
+  Board 20: 78.7038s - Positions: (33, 29), Objective value player one: 6.7917 - Recursive calls: 983,839
+  Board 21: 79.9333s - Positions: (12, 32), Objective value player one: 6.7528 - Recursive calls: 983,839
+  Board 22: 78.6525s - Positions: (1, 25), Objective value player one: 6.7778 - Recursive calls: 983,839
+  Board 23: 79.1416s - Positions: (7, 24), Objective value player one: 6.8111 - Recursive calls: 983,839
+  Board 24: 78.7174s - Positions: (1, 41), Objective value player one: 6.7889 - Recursive calls: 983,839
+  Board 25: 78.9081s - Positions: (1, 29), Objective value player one: 6.7778 - Recursive calls: 983,839
+  Board 26: 79.6396s - Positions: (12, 14), Objective value player one: 6.7528 - Recursive calls: 983,839
+  Board 27: 78.9915s - Positions: (43, 19), Objective value player one: 6.8056 - Recursive calls: 983,839
+  Board 28: 78.7992s - Positions: (41, 15), Objective value player one: 6.7972 - Recursive calls: 983,839
+  Board 29: 79.0307s - Positions: (38, 43), Objective value player one: 6.7917 - Recursive calls: 983,839
+
+  Summary:
+    Successful: 30/30
+    Timeouts: 0/30
+    Average time: 79.1993s
+    Min time: 78.6079s
+    Max time: 80.2757s
+
+================================================================================
+Modality: All Prunings (Feasibility + Upper Bound + Memo)
+================================================================================
+  Board 0: 0.4945s - Positions: (42, 31), Objective value player one: 6.7667 - Recursive calls: 808
+  Board 1: 0.1670s - Positions: (20, 1), Objective value player one: 6.7917 - Recursive calls: 307
+  Board 2: 0.1578s - Positions: (24, 41), Objective value player one: 6.7778 - Recursive calls: 263
+  Board 3: 0.6914s - Positions: (2, 21), Objective value player one: 6.7361 - Recursive calls: 1,195
+  Board 4: 0.1095s - Positions: (33, 7), Objective value player one: 6.7917 - Recursive calls: 206
+  Board 5: 0.2161s - Positions: (25, 1), Objective value player one: 6.7778 - Recursive calls: 366
+  Board 6: 0.2815s - Positions: (29, 7), Objective value player one: 6.7472 - Recursive calls: 463
+  Board 7: 0.5058s - Positions: (30, 44), Objective value player one: 6.7639 - Recursive calls: 1,033
+  Board 8: 0.4778s - Positions: (41, 43), Objective value player one: 6.6667 - Recursive calls: 786
+  Board 9: 0.4428s - Positions: (19, 33), Objective value player one: 6.7667 - Recursive calls: 805
+  Board 10: 0.2294s - Positions: (29, 33), Objective value player one: 6.8194 - Recursive calls: 394
+  Board 11: 0.3785s - Positions: (2, 41), Objective value player one: 6.7778 - Recursive calls: 608
+  Board 12: 0.3272s - Positions: (44, 33), Objective value player one: 6.7639 - Recursive calls: 623
+  Board 13: 0.2454s - Positions: (32, 12), Objective value player one: 6.7500 - Recursive calls: 404
+  Board 14: 0.3412s - Positions: (34, 1), Objective value player one: 6.7556 - Recursive calls: 554
+  Board 15: 0.1936s - Positions: (15, 42), Objective value player one: 6.7778 - Recursive calls: 349
+  Board 16: 0.4707s - Positions: (15, 21), Objective value player one: 6.7778 - Recursive calls: 836
+  Board 17: 0.2948s - Positions: (21, 44), Objective value player one: 6.7917 - Recursive calls: 487
+  Board 18: 0.2776s - Positions: (12, 42), Objective value player one: 6.7917 - Recursive calls: 487
+  Board 19: 0.3105s - Positions: (30, 31), Objective value player one: 6.7639 - Recursive calls: 529
+  Board 20: 0.2449s - Positions: (33, 29), Objective value player one: 6.7917 - Recursive calls: 435
+  Board 21: 0.4322s - Positions: (12, 32), Objective value player one: 6.7528 - Recursive calls: 767
+  Board 22: 0.3469s - Positions: (1, 25), Objective value player one: 6.7778 - Recursive calls: 604
+  Board 23: 0.1327s - Positions: (7, 24), Objective value player one: 6.8111 - Recursive calls: 232
+  Board 24: 0.3594s - Positions: (1, 41), Objective value player one: 6.7889 - Recursive calls: 555
+  Board 25: 0.0454s - Positions: (1, 29), Objective value player one: 6.7778 - Recursive calls: 65
+  Board 26: 0.3619s - Positions: (12, 14), Objective value player one: 6.7528 - Recursive calls: 671
+  Board 27: 0.4358s - Positions: (43, 19), Objective value player one: 6.8056 - Recursive calls: 726
+  Board 28: 0.2693s - Positions: (41, 15), Objective value player one: 6.7972 - Recursive calls: 420
+  Board 29: 0.5425s - Positions: (38, 43), Objective value player one: 6.7917 - Recursive calls: 1,090
+
+  Summary:
+    Successful: 30/30
+    Timeouts: 0/30
+    Average time: 0.3261s
+    Min time: 0.0454s
+    Max time: 0.6914s
+
+================================================================================
+COMPARATIVE SUMMARY
+================================================================================
+
+Modality                                           Average (s)     Min (s)      Max (s)      Timeouts   Successful Recursive Calls
+----------------------------------------------------------------------------------------------------------------------------------
+Feasibility Pruning Only                           444.1627        441.6423     454.2635     0          30         5,634,937
+Feasibility + Memo                                 79.1993         78.6079      80.2757      0          30         983,839
+All Prunings (Feasibility + Upper Bound + Memo)    0.3261          0.0454       0.6914       0          30         569
+
+================================================================================
+SOLUTION COMPARISON
+================================================================================
+
+  Board 0: ✓ All modalities agree - Positions: (42, 31), Objective value player one: 6.766667
+  Board 1: ✓ All modalities agree - Positions: (20, 1), Objective value player one: 6.791667
+  Board 2: ✓ All modalities agree - Positions: (24, 41), Objective value player one: 6.777778
+  Board 3: ✓ All modalities agree - Positions: (2, 21), Objective value player one: 6.736111
+  Board 4: ✓ All modalities agree - Positions: (33, 7), Objective value player one: 6.791667
+  Board 5: ✓ All modalities agree - Positions: (25, 1), Objective value player one: 6.777778
+  Board 6: ✓ All modalities agree - Positions: (29, 7), Objective value player one: 6.747222
+  Board 7: ✓ All modalities agree - Positions: (30, 44), Objective value player one: 6.763889
+  Board 8: ✓ All modalities agree - Positions: (41, 43), Objective value player one: 6.666667
+  Board 9: ✓ All modalities agree - Positions: (19, 33), Objective value player one: 6.766667
+  Board 10: ✓ All modalities agree - Positions: (29, 33), Objective value player one: 6.819444
+  Board 11: ✓ All modalities agree - Positions: (2, 41), Objective value player one: 6.777778
+  Board 12: ✓ All modalities agree - Positions: (44, 33), Objective value player one: 6.763889
+  Board 13: ✓ All modalities agree - Positions: (32, 12), Objective value player one: 6.750000
+  Board 14: ✓ All modalities agree - Positions: (34, 1), Objective value player one: 6.755556
+  Board 15: ✓ All modalities agree - Positions: (15, 42), Objective value player one: 6.777778
+  Board 16: ✓ All modalities agree - Positions: (15, 21), Objective value player one: 6.777778
+  Board 17: ✓ All modalities agree - Positions: (21, 44), Objective value player one: 6.791667
+  Board 18: ✓ All modalities agree - Positions: (12, 42), Objective value player one: 6.791667
+  Board 19: ✓ All modalities agree - Positions: (30, 31), Objective value player one: 6.763889
+  Board 20: ✓ All modalities agree - Positions: (33, 29), Objective value player one: 6.791667
+  Board 21: ✓ All modalities agree - Positions: (12, 32), Objective value player one: 6.752778
+  Board 22: ✓ All modalities agree - Positions: (1, 25), Objective value player one: 6.777778
+  Board 23: ✓ All modalities agree - Positions: (7, 24), Objective value player one: 6.811111
+  Board 24: ✓ All modalities agree - Positions: (1, 41), Objective value player one: 6.788889
+  Board 25: ✓ All modalities agree - Positions: (1, 29), Objective value player one: 6.777778
+  Board 26: ✓ All modalities agree - Positions: (12, 14), Objective value player one: 6.752778
+  Board 27: ✓ All modalities agree - Positions: (43, 19), Objective value player one: 6.805556
+  Board 28: ✓ All modalities agree - Positions: (41, 15), Objective value player one: 6.797222
+  Board 29: ✓ All modalities agree - Positions: (38, 43), Objective value player one: 6.791667
+
+✓ All solutions match across all modalities!
+
+Speedup relative to first modality:
+  Feasibility + Memo: 5.61x faster
+  All Prunings (Feasibility + Upper Bound + Memo): 1361.88x faster

@@ -11,6 +11,94 @@ from typing import Optional, Dict
 from state import State
 from board import Board
 
+# Hardcoded template positions for Catan board visualization.
+# Consistent with Board.VERTEX_TO_TILES and Board.VERTEX_NEIGHBORS.
+
+# Tile centers (tile_id: (x, y))
+TILE_CENTERS = {
+    0: (1.385641, 0.000000),
+    1: (2.771281, 0.000000),
+    2: (4.156922, 0.000000),
+    3: (0.692820, 1.200000),
+    4: (2.078461, 1.200000),
+    5: (3.464102, 1.200000),
+    6: (4.849742, 1.200000),
+    7: (0.000000, 2.400000),
+    8: (1.385641, 2.400000),
+    9: (2.771281, 2.400000),
+    10: (4.156922, 2.400000),
+    11: (5.542563, 2.400000),
+    12: (0.692820, 3.600000),
+    13: (2.078461, 3.600000),
+    14: (3.464102, 3.600000),
+    15: (4.849742, 3.600000),
+    16: (1.385641, 4.800000),
+    17: (2.771281, 4.800000),
+    18: (4.156922, 4.800000),
+}
+
+# Vertex positions (vertex_id: (x, y))
+VERTEX_POSITIONS = {
+    0:  (2.078461, -0.400000),
+    1:  (2.078461,  0.400000),
+    2:  (1.385641,  0.800000),
+    3:  (0.692820,  0.400000),
+    4:  (1.385641, -0.800000),
+    5:  (0.692821, -0.400000),
+    6:  (3.464101, -0.400000),
+    7:  (3.464102,  0.400000),
+    8:  (2.771281,  0.800000),
+    9:  (2.771281, -0.800000),
+    10: (4.849742, -0.400000),
+    11: (4.849742,  0.400000),
+    12: (4.156922,  0.800000),
+    13: (4.156922, -0.800000),
+    14: (1.385641,  1.600000),
+    15: (0.692820,  2.000000),
+    16: (-0.000000, 1.600000),
+    17: (-0.000000, 0.800000),
+    18: (2.771281,  1.600000),
+    19: (2.078461,  2.000000),
+    20: (4.156922,  1.600000),
+    21: (3.464102,  2.000000),
+    22: (5.542562,  0.800000),
+    23: (5.542563,  1.600000),
+    24: (4.849742,  2.000000),
+    25: (0.692820,  2.800000),
+    26: (-0.000000, 3.200000),
+    27: (-0.692820, 2.800000),
+    28: (-0.692820, 2.000000),
+    29: (2.078461,  2.800000),
+    30: (1.385641,  3.200000),
+    31: (3.464102,  2.800000),
+    32: (2.771281,  3.200000),
+    33: (4.849742,  2.800000),
+    34: (4.156922,  3.200000),
+    35: (6.235383,  2.000000),
+    36: (6.235383,  2.800000),
+    37: (5.542563,  3.200000),
+    38: (1.385641,  4.000000),
+    39: (0.692820,  4.400000),
+    40: (-0.000000, 4.000000),
+    41: (2.771281,  4.000000),
+    42: (2.078461,  4.400000),
+    43: (4.156922,  4.000000),
+    44: (3.464102,  4.400000),
+    45: (5.542562,  4.000000),
+    46: (4.849742,  4.400000),
+    47: (2.078461,  5.200000),
+    48: (1.385641,  5.600000),
+    49: (0.692821,  5.200000),
+    50: (3.464101,  5.200000),
+    51: (2.771281,  5.600000),
+    52: (4.156922,  5.600000),
+    53: (4.849742,  5.200000),
+}
+
+# Hexagon parameters (must match visualization)
+HEX_RADIUS = 0.8
+HEX_ORIENTATION = 0.0  # 0 degrees - pointy top (puntas hacia arriba)
+
 
 def hex_to_pixel(row: int, col: int, size: float = 1.0) -> tuple:
     """
@@ -73,10 +161,39 @@ def vertex_to_pixel(vertex_id: int, tile_centers: Dict[int, tuple],
         return (0, 0)
     
     if len(positions) == 1:
-        # Vertex touches one tile - position on edge
+        # Vertex touches one tile - it's on the outer edge
+        # Use neighbors to determine the correct direction
         tile_x, tile_y = positions[0]
-        # Place on top edge of hexagon
-        return (tile_x, tile_y + hex_radius)
+        neighbors = board.vertex_neighbors.get(vertex_id, [])
+        
+        if neighbors:
+            # Find a neighbor that also touches this tile (or touches 2 tiles)
+            for nv in neighbors:
+                nv_tiles = board.tiles_touching.get(nv, [])
+                if len(nv_tiles) >= 2:
+                    # Calculate neighbor's position (it touches 2+ tiles)
+                    nv_positions = [tile_centers[tid] for tid in nv_tiles if tid in tile_centers]
+                    if len(nv_positions) >= 2:
+                        p1, p2 = nv_positions[0], nv_positions[1]
+                        mid_x = (p1[0] + p2[0]) / 2
+                        mid_y = (p1[1] + p2[1]) / 2
+                        dx = p2[0] - p1[0]
+                        dy = p2[1] - p1[1]
+                        dist = np.sqrt(dx*dx + dy*dy)
+                        if dist > 0:
+                            neighbor_x = mid_x + hex_radius*0.6*dx/dist
+                            neighbor_y = mid_y + hex_radius*0.6*dy/dist
+                            # Extend further out from neighbor to vertex position
+                            vx = neighbor_x + (neighbor_x - tile_x) * 0.5
+                            vy = neighbor_y + (neighbor_y - tile_y) * 0.5
+                            return (vx, vy)
+        
+        # Fallback: calculate based on hexagon geometry
+        # For a hexagon rotated 30 degrees, vertices are at angles: 30°, 90°, 150°, 210°, 270°, 330°
+        # Try to determine which edge based on vertex neighbors or use a default
+        # Default: place on top-right edge
+        angle = np.pi / 6  # 30 degrees
+        return (tile_x + hex_radius * np.cos(angle), tile_y + hex_radius * np.sin(angle))
     elif len(positions) == 2:
         # Vertex touches two tiles - position between them
         p1, p2 = positions[0], positions[1]
@@ -140,27 +257,25 @@ def visualize_board_gui(board: Board, state: Optional[State] = None,
         'desert': 'D'
     }
     
-    # Draw tiles
-    tile_centers = {}
-    hex_radius = 0.8  # Smaller radius to avoid overlap
-    
+    # Draw tiles using template positions
     for tile in board.tiles:
-        row, col = tile['row'], tile['col']
-        x, y = hex_to_pixel(row, col, size=hex_radius)
-        tile_centers[tile['id']] = (x, y)
+        tile_id = tile['id']
+        if tile_id not in TILE_CENTERS:
+            continue
         
+        x, y = TILE_CENTERS[tile_id]
         resource = tile['resource']
         color = resource_colors.get(resource, '#CCCCCC')
         
-        # Draw hexagon with proper orientation (rotated 30 degrees)
-        hexagon = RegularPolygon((x, y), numVertices=6, radius=hex_radius,
-                                orientation=np.pi/6 + np.pi/6, facecolor=color,
+        # Draw hexagon with pointy top (orientation=0)
+        hexagon = RegularPolygon((x, y), numVertices=6, radius=HEX_RADIUS,
+                                orientation=0.0, facecolor=color,
                                 edgecolor='black', linewidth=2, alpha=0.9)
         ax.add_patch(hexagon)
         
         # Add resource label
         abbrev = resource_abbrev.get(resource, '?')
-        label_y = y + hex_radius * 0.4
+        label_y = y + HEX_RADIUS * 0.4
         ax.text(x, label_y, abbrev, ha='center', va='center',
                fontsize=11, fontweight='bold', 
                color='white' if resource != 'desert' else 'black',
@@ -170,52 +285,37 @@ def visualize_board_gui(board: Board, state: Optional[State] = None,
         number = tile['number']
         if number is not None:
             # Draw circle for number
-            circle_radius = hex_radius * 0.25
-            circle = Circle((x, y - hex_radius * 0.4), circle_radius, 
+            circle_radius = HEX_RADIUS * 0.25
+            circle = Circle((x, y - HEX_RADIUS * 0.4), circle_radius, 
                            facecolor='white', edgecolor='black', linewidth=1.5)
             ax.add_patch(circle)
-            ax.text(x, y - hex_radius * 0.4, str(number), ha='center', va='center',
+            ax.text(x, y - HEX_RADIUS * 0.4, str(number), ha='center', va='center',
                    fontsize=9, fontweight='bold')
     
-    # Draw vertices and settlements
+    # Draw vertices and settlements using template positions
     if state:
-        # Create vertex positions using exact tile mappings
-        vertex_positions = {}
-        
-        # For each vertex, calculate position based on tiles it touches
-        for vertex in board.vertices:
-            vx, vy = vertex_to_pixel(vertex, tile_centers, board, hex_radius)
-            vertex_positions[vertex] = (vx, vy)
-        
-        # Draw all vertices as small dots
-        for vertex, (vx, vy) in vertex_positions.items():
+        # Use precomputed vertex positions from template
+        for vertex_id, (vx, vy) in VERTEX_POSITIONS.items():
             # Check if this vertex has a settlement
             has_settlement = False
             settlement_player = None
             
-            if state:
-                for player, vertices in state.houses.items():
-                    if vertex in vertices:
-                        has_settlement = True
-                        settlement_player = player
-                        break
+            for player, vertices in state.houses.items():
+                if vertex_id in vertices:
+                    has_settlement = True
+                    settlement_player = player
+                    break
             
             if has_settlement:
                 # Draw settlement (larger circle with player color)
                 color = player_colors.get(settlement_player, '#000000')
-                settlement_radius = hex_radius * 0.15
+                settlement_radius = HEX_RADIUS * 0.15
                 settlement = Circle((vx, vy), settlement_radius, facecolor=color,
                                    edgecolor='black', linewidth=2.5, zorder=10)
                 ax.add_patch(settlement)
                 # Add player number
                 ax.text(vx, vy, str(settlement_player), ha='center', va='center',
                        fontsize=9, fontweight='bold', color='white', zorder=11)
-            else:
-                # Draw empty vertex (small dot) - optional, can comment out for cleaner look
-                # vertex_dot = Circle((vx, vy), hex_radius * 0.05, facecolor='gray',
-                #                   edgecolor='black', linewidth=1, alpha=0.3)
-                # ax.add_patch(vertex_dot)
-                pass
     
     # Set title
     title = "Catan Board - Optimal Settlement Placement"
@@ -233,10 +333,10 @@ def visualize_board_gui(board: Board, state: Optional[State] = None,
     ax.set_title(title, fontsize=9, pad=15)
     
     # Set reasonable axis limits to show all tiles
-    all_x = [p[0] for p in tile_centers.values()]
-    all_y = [p[1] for p in tile_centers.values()]
+    all_x = [p[0] for p in TILE_CENTERS.values()]
+    all_y = [p[1] for p in TILE_CENTERS.values()]
     if all_x and all_y:
-        margin = hex_radius * 1.5
+        margin = HEX_RADIUS * 1.5
         ax.set_xlim(min(all_x) - margin, max(all_x) + margin)
         ax.set_ylim(min(all_y) - margin, max(all_y) + margin)
     
