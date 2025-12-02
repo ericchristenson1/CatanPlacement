@@ -306,7 +306,7 @@ This means evaluating a settlement placement is **O(1)** - just a dictionary loo
 
 3. **Local Lower Bound (LB)**: Maintained per recursive call, updated as better solutions are found. Enables pruning relative to the best known value at that node
 
-### Memorization
+### Memoization
 
 - Caches results for identical game states (same player, same occupied vertices, same available vertices)
 - Avoids recomputing entire subtrees when the same configuration is reached via different paths
