@@ -69,21 +69,27 @@ class Board:
     }
     
     def __init__(self, seed: Optional[int] = None, num_players: int = 4,
-                 quality_weights: Optional[Dict[str, float]] = None):
+                 quality_weights: Optional[Dict[str, float]] = None,
+                 tile_config: Optional[List[Dict]] = None):
         """
-        Initialize a random Catan board.
-        
+        Initialize a Catan board.
+
         Args:
-            seed: Random seed for reproducibility
+            seed: Random seed for reproducibility (ignored when tile_config is provided)
             num_players: Number of players (default: 4)
             quality_weights: Dictionary with keys 'w_resources', 'w_expected_cards', 'w_prob_at_least_one'
                            If None, uses default values (1/3 each)
+            tile_config: List of 19 dicts, each with 'resource' (str) and 'number' (int or None).
+                        If provided, uses this exact configuration instead of random assignment.
+                        Resources: 'wood', 'brick', 'wheat', 'ore', 'sheep', 'desert'
+                        Numbers: 2-12 (None for desert)
+                        Example: [{'resource': 'wood', 'number': 6}, ..., {'resource': 'desert', 'number': None}]
         """
-        if seed is not None:
+        if tile_config is None and seed is not None:
             random.seed(seed)
-        
+
         self.num_players = num_players
-        
+
         # Set quality weights
         if quality_weights is None:
             self.quality_weights = {
@@ -93,27 +99,47 @@ class Board:
             }
         else:
             self.quality_weights = quality_weights
-        
+
         # Initialize dice probabilities
         self.dice_probabilities = self._compute_dice_probabilities()
-        
+
         # Create board layout (19 tiles in 3-4-5-4-3 pattern)
         self.tiles = self._create_board_layout()
-        
-        # Assign resources randomly
-        self._assign_resources()
-        
-        # Assign number tokens randomly
-        self._assign_number_tokens()
-        
+
+        if tile_config is not None:
+            # Use provided configuration
+            self._apply_tile_config(tile_config)
+        else:
+            # Assign resources randomly
+            self._assign_resources()
+            # Assign number tokens randomly
+            self._assign_number_tokens()
+
         # Build vertex and adjacency structures using exact mappings
         self.vertices = list(range(54))  # 0-53
         self.tiles_touching = self._build_tiles_touching()
         self.vertex_neighbors = self._build_vertex_neighbors()
-        
+
         # Precompute quality matrices
         self.single_quality = self._precompute_single_quality()
         self.pair_quality = self._precompute_pair_quality()
+
+    @classmethod
+    def from_config(cls, tile_config: List[Dict], num_players: int = 4,
+                    quality_weights: Optional[Dict[str, float]] = None) -> "Board":
+        """
+        Create a Board from a specific tile configuration.
+
+        Args:
+            tile_config: List of 19 dicts with 'resource' and 'number' keys.
+            num_players: Number of players (default: 4)
+            quality_weights: Quality function weights (default: equal 1/3 each)
+
+        Returns:
+            Board instance with the given configuration
+        """
+        return cls(num_players=num_players, quality_weights=quality_weights,
+                   tile_config=tile_config)
     
     def _compute_dice_probabilities(self) -> Dict[int, float]:
         """Compute probability of rolling each number (2-12)."""
@@ -165,6 +191,46 @@ class Board:
         
         return tiles
     
+    def _apply_tile_config(self, tile_config: List[Dict]):
+        """
+        Apply a specific tile configuration to the board.
+
+        Args:
+            tile_config: List of 19 dicts, each with 'resource' and 'number' keys.
+                        Must have exactly 19 entries (one per tile, in tile order 0-18).
+
+        Raises:
+            ValueError: If tile_config is invalid
+        """
+        valid_resources = set(self.RESOURCE_COUNTS.keys())
+
+        if len(tile_config) != 19:
+            raise ValueError(f"tile_config must have exactly 19 entries, got {len(tile_config)}")
+
+        for i, entry in enumerate(tile_config):
+            resource = entry.get('resource')
+            number = entry.get('number')
+
+            if resource not in valid_resources:
+                raise ValueError(
+                    f"Tile {i}: invalid resource '{resource}'. "
+                    f"Must be one of: {sorted(valid_resources)}"
+                )
+
+            if resource == 'desert':
+                if number is not None:
+                    raise ValueError(f"Tile {i}: desert tiles must have number=None, got {number}")
+            else:
+                valid_numbers = {2, 3, 4, 5, 6, 8, 9, 10, 11, 12}
+                if number not in valid_numbers:
+                    raise ValueError(
+                        f"Tile {i}: invalid number token {number}. "
+                        f"Must be one of {sorted(valid_numbers)} (7 is not used in Catan)."
+                    )
+
+            self.tiles[i]['resource'] = resource
+            self.tiles[i]['number'] = number
+
     def _assign_resources(self):
         """Randomly assign resources to tiles."""
         resources = []
